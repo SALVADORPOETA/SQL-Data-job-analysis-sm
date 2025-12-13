@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  postgres:
+    build: .
+    container_name: sql_app_postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - sql_project_data:/var/lib/postgresql/data
+      - ./project_sql/init_tables.sql:/docker-entrypoint-initdb.d/init_tables.sql
+      - ./csv_files:/csv_files
+    ports:
+      - '${POSTGRES_PORT}:5432'
+
+volumes:
+  sql_project_data:
